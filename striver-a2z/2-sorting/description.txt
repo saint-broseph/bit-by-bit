@@ -1,0 +1,1 @@
+This repo contains all types of sorting algorithms used for sorting elements in a vector.
