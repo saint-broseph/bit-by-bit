@@ -1,0 +1,1 @@
+This repo has theory and templates of everything in DSA from sorting algorithms to binary search to everything.
