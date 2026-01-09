@@ -1,0 +1,25 @@
+Binary Search on Answers
+
+Identification: The question asks for the "Minimum value such that X is possible" or "Maximum value such that Y is possible.
+"The "possibility" function must be monotonic (if it works for $x$, it works for all y > x).
+
+Finding the minimum/maximum possible valid value.
+
+bool isPossible(vector<int>& arr, int mid, int k) {
+    // Custom logic: Can we achieve the goal with 'mid'?
+    return true; 
+}
+
+int binarySearchOnAnswer(vector<int>& arr, int k) {
+    int low = 0, high = 1e9, ans = -1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (isPossible(arr, mid, k)) {
+            ans = mid;
+            high = mid - 1; // Try to find a smaller 'minimum'
+        } else {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}

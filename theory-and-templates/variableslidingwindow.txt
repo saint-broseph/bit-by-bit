@@ -1,0 +1,18 @@
+Variable Size Sliding Window
+Longest substring/subarray with a condition.
+
+int slidingWindow(vector<int>& arr, int k) {
+    int i = 0, j = 0, ans = 0;
+    unordered_map<int, int> mpp;
+    while (j < arr.size()) {
+        mpp[arr[j]]++; // Expansion logic
+        while (mpp.size() > k) { // Shrinking condition
+            mpp[arr[i]]--;
+            if (mpp[arr[i]] == 0) mpp.erase(arr[i]);
+            i++;
+        }
+        ans = max(ans, j - i + 1);
+        j++;
+    }
+    return ans;
+}

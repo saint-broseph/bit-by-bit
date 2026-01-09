@@ -1,0 +1,18 @@
+void shiftLeft(std::vector<int>& arr, int k) {
+    int n = arr.size();
+    
+    // Handle cases where k > n
+    k = k % n;
+    if (k == 0) return;
+
+    std::vector<int> temp(n);
+
+    for (int i = 0; i < n; i++) {
+        // The core logic: find the new position
+        int new_index = (i + (n - k)) % n;
+        temp[new_index] = arr[i];
+    }
+
+    // Copy back to original array
+    arr = temp;
+}

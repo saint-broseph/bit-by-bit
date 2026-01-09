@@ -1,0 +1,17 @@
+Floyd’s Cycle Finding (Tortoise and Hare)
+
+Identification: "Detect a cycle," "Find the start of a cycle," or "Find the middle of the list."
+
+Approach: * Detect Cycle: Fast pointer moves 2 steps, slow moves 1. If they meet, there's a cycle.
+
+Find Middle: When fast reaches the end, slow is at the middle.
+
+bool hasCycle(ListNode *head) {
+    ListNode *slow = head, *fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) return true;
+    }
+    return false;
+}

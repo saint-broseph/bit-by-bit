@@ -1,0 +1,104 @@
+The one's complement of a binary number is obtained by flipping all the bits.
+The two's complement is obtained by taking the one's complement of a number and adding 1.
+Right Shift (>>): Shifts bits to the right, fills left with 0s.
+Left Shift (<<): Shifts bits to the left, fills right with 0s.
+
+Check if power of 2: (n > 0 && (n & (n - 1)) == 0)
+
+Count set bits: __builtin_popcount(n)
+
+Get i^{th} bit: (n >> i) & 1
+
+Set i^{th} bit: n | (1 << i)
+
+Clear i^{th} bit: n & ~(1 << i)
+
+Check if Even/Odd (n & 1) If result is 0, it's even; if 1, it's odd.
+
+Multiply by 2^k n << K
+
+Divide by 2^k n >> K
+
+Toggle i^{th} bit: n ^ (1 << i)
+
+
+Remove the Lowest Set Bit
+Code: n = n & (n - 1)
+Use Case: Counting set bits (Kernighan’s Algorithm) or checking powers of 2.
+
+Isolate the Lowest Set Bit
+Code: n & -n
+Use Case: Building Fenwick Trees (Binary Indexed Trees).
+
+Swap Two Numbers
+Code: a ^= b; b ^= a; a ^= b;
+Use Case: Swapping without a temporary variable
+
+Subset Generation
+Iterate through all Subsets of an Array
+If an array has N elements, there are 2^N subsets. 
+We can map each number from 0 to 2^N-1 to a subset.
+for (int i = 0; i < (1 << n); i++) {
+    for (int j = 0; j < n; j++) {
+        if ((i >> j) & 1) {
+            // Element j is in the current subset i
+        }
+    }
+}
+
+Iterate through Subsets of a Bitmask
+If you have a mask m and want to iterate only over its submasks (bits that are set in m):
+for (int s = m; s > 0; s = (s - 1) & m) {
+    // s is a submask of m
+}
+
+Built-in compiler functions:
+__builtin_popcount(n): Returns number of set bits (1s).
+__builtin_clz(n): Count Leading Zeros (zeros at the start). Helpful for finding the highest set bit.
+__builtin_ctz(n): Count Trailing Zeros (zeros at the end).
+__builtin_parity(n): Returns 1 if the number of set bits is odd, else 0.
+
+
+The "Single Number" Pattern
+Problem: Every element appears twice except for one. Find it.
+Logic: XORing a number with itself results in 0 (x XOR x = 0).
+Approach: XOR all elements together; the result is the unique number.
+
+The "Two Single Numbers" Pattern
+Problem: Every element appears twice except for two elements (x and y).
+Approach:XOR all numbers. Result is XOR_val = x XOR y.
+Find the rightmost set bit in XOR_val using set_bit = XOR_val & -XOR_val.
+This bit must be different between x and y.
+Divide all numbers into two groups based on this bit and XOR each group separately to find x and y.
+
+Is it a subset problem? Think bitmask.
+Is there a frequency pattern (pairs/triplets)? Think XOR.
+Are we working with powers of 2? Think n & (n-1).
+Are we dealing with large ranges but small bit constraints (up to 31 or 63)? Process bit-by-bit (0 to 31)
+
+Checking if the i-th Bit is Set
+(1 << i) & num   → set if result ≠ 0
+(num >> i) & 1   → set if result ≠ 0
+
+Toggle the rightmost bit:
+return n | (n + 1);
+
+
+XOR highlights the positions where the two numbers have different bits.
+
+Given an array of nums of n integers. Every integer in the array appears twice except one integer. Find the number that appeared once in the array.
+XOR all elements
+
+/* Function to find the XOR 
+    of numbers from 1 to n*/
+    int XORtillN(int n) {
+        if(n % 4 == 1) return 1;
+        if(n % 4 == 2) return n+1;
+        if(n % 4 == 3) return 0;
+        return n;
+    }
+
+/* Function to find the XOR of numbers from L to R*/
+    int findRangeXOR(int l, int r){			
+		return XORtillN(l-1) ^ XORtillN(r);
+	}

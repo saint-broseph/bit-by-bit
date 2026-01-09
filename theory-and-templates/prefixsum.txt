@@ -1,0 +1,128 @@
+IDENTIFYING PREFIX SUM PROBLEMS:
+
+“Subarray sum”
+“Range sum”
+“Number of subarrays such that…”
+“Sum of elements between indices”
+“Continuous segment”
+“Cumulative / running sum”
+“Difference of sums”
+
+STRUCTURAL CLUES:
+
+Multiple range queries
+Need to compute many subarray sums efficiently
+Condition depends on sum equality / inequality
+Asked to count, maximize, or check existence of subarrays
+
+If you can rewrite the problem as:
+pref[r]−pref[l−1]=Xorpref[r]=pref[l−1]+X: prefix sum + hashmap
+
+TEMPLATE 1:
+
+Build Prefix Sum Array
+Use when: multiple range sum queries
+
+vector<long long> pref(n);
+pref[0] = a[0];
+for (int i = 1; i < n; i++)
+    pref[i] = pref[i-1] + a[i];
+
+Range sum: sum(l, r) = pref[r] - (l > 0 ? pref[l-1] : 0);
+
+
+TEMPLATE 2:
+
+Count subarrays with sum K
+
+Important idea:
+pref[r]−pref[l−1]=k⇒pref[l−1]=pref[r]−k
+
+unordered_map<long long, int> freq;
+freq[0] = 1;
+
+long long pref = 0, count = 0;
+
+for (int x : a) {
+    pref += x;
+    if (freq.count(pref - k))
+        count += freq[pref - k];
+    freq[pref]++;
+}
+
+
+TEMPLATE 3: LONGEST SUBARRAY WITH GIVEN SUM
+
+unordered_map<long long, int> first;
+first[0] = -1;
+
+long long pref = 0;
+int ans = 0;
+
+for (int i = 0; i < n; i++) {
+    pref += a[i];
+    if (first.count(pref - k))
+        ans = max(ans, i - first[pref - k]);
+    if (!first.count(pref))
+        first[pref] = i;
+}
+
+
+TEMPLATE 4: SUBARRAYS WITH SUM DIVISIBLE BY K
+(pref[r]−pref[l])modk=0⇒pref[r]modk=pref[l]modk
+
+vector<int> cnt(k, 0);
+cnt[0] = 1;
+
+long long pref = 0, ans = 0;
+
+for (int x : a) {
+    pref += x;
+    int mod = ((pref % k) + k) % k;
+    ans += cnt[mod];
+    cnt[mod]++;
+}
+
+
+TEMPLATE 5: BINARY ARRAY TRICKS (0/1 ARRAYS)
+
+Equal 0s and 1s - Convert 0 → -1, then sum = 0
+Max subarray of 1s - Sliding window / prefix
+Count subarrays with equal 0s & 1s - Prefix sum freq
+
+TEMPLATE 6: 
+Used when maximizing/minimizing expressions like: 
+pref[j]−pref[i]
+
+minPref = pref[0];
+ans = -INF;
+
+for (int i = 1; i < n; i++) {
+    ans = max(ans, pref[i] - minPref);
+    minPref = min(minPref, pref[i]);
+}
+
+
+TEMPLATE 7: PREFIX SUM + DIFFERENCE ARRAY
+Range Update Queries
+If many updates:
+add v to [l, r]
+
+Use difference array:
+diff[l] += v;
+diff[r+1] -= v;
+Final array via prefix sum on diff
+
+TEMPLATE 8:
+If subarray sum matters → try prefix sums first.
+If equality of sums appears → hashmap with prefix sums.
+
+IMPORTANT POINTS:
+
+Forgetting freq[0] = 1
+Using sliding window when negatives exist
+Modulo negative values (always normalize)
+Overwriting first occurrence (for longest subarray)
+Using int instead of long long
+
+

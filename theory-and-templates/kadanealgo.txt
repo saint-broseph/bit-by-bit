@@ -1,0 +1,11 @@
+Max subarray sum.
+
+long long maxSubarraySum(vector<int>& arr) {
+    long long maxi = LONG_MIN, sum = 0;
+    for (int x : arr) {
+        sum += x;
+        maxi = max(maxi, sum);
+        if (sum < 0) sum = 0; // Reset if sum becomes negative
+    }
+    return maxi;
+}
