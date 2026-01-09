@@ -1,0 +1,282 @@
+1) C++ has all the libraries math and string etc in stdc++.h
+
+2) include the stdc++ using #include <bits/stdc++.h>
+
+3) using namespace std excludes the usage of std :: before cin and cout
+4) Containers: Queues, Vectors, Pairs
+
+5) Pairs is a part of utility library. 
+pair <datatype, datatype> name={value1, value2}
+To access pair values: name.first and name.second
+To store multiple values in pair, you can use nested pairs: pair<datatype, pair <datatype, datatype>>name2={value1, {pair1}}
+To access pair values in nested pair: pair.second.first
+Pair array: pair<int, int>arr[]={{a,b}, {c,d}}; To access: arr[index].first
+
+6) VECTORS: Dynamic array
+vector <int> v; => Creates an empty Container
+v.pushback(1); will put 1 into the vector
+v.emplace_back(2); dynamically increases the size and puts a 2 there
+
+To make a vector of pairs: vector <int, int> vec;
+vec.pushback({1,2});
+vec.emplaceback(1,2); 
+
+emplace_back is faster than pushback.
+vector <int> a(5,100) makes an array of size 5 with all elements 100
+vector <int> b(a); copies the vector a into b
+
+vector<int> a(5); makes an array of size 5 with garbage values
+a.pushback(1); makes size of a 6
+
+Accessing vector elements is done in the same way as accessing array elements.
+v->{20,10,5,4,2}
+v[1]=10; v.at(0)=20
+
+7) Iterator: for(auto it:v)
+=> v.erase to erase any value from vector (reduces vector size)
+For iterator you write: 
+vector<int>::iterator it = v.begin(); //Points to the memory address not the elements
+If you print v.begin, it prints the memory address and not the element present there.
+To print the element at that memory address: cout << *(it) << " "; //Similar to pointer; it++ moves to next memory address
+Iterator points to the memory address.
+
+vector<int>::iterator it=v.end(); does not point to the last element, it points to somewhere after the last element; if you do it-- to this iterator, then it will point to the last element
+v.back() points to the last element
+
+SWAP 2 ELEMENTS IN A VECTOR: swap(s[a],s[b]);
+
+
+8) Printing the vector:
+
+for(vector<int>::iterator it=v.begin(); it!=v.end(); it++)
+cout << *(it);
+OR
+for(auto it = v.begin(); it!=v.end(); it++)
+cout << *(it);
+OR
+for(auto it: v)
+cout << it;
+
+9) Deletion in vector:
+v.erase(v.being()+1); //Memory address is deleted; the size of array is reduced; begin=index 0; begin+1=index 1
+
+v.erase(v.begin()+2, v.begin()+4); [start, end)
+
+10) Insertion in vector:
+
+vector<int> v(2,100); {100,100}
+v.insert(v.begin(), 300); {300,100,100}
+v.insert(v.begin()+1,2,10); {200,10,10,100,100}
+
+vector<int> a(2,100);
+v.insert(v.begin(), a.begin(), a.end());
+
+v.size(); => SIZE OF VECTORS
+v.pop_back(); pops out the last element
+v1.swap(v2); swaps the 2 Vectors
+v.clear(); erases the entire vector
+cout << v.empty(); no element: true; else: false
+// Reverse end and rbegin; reverse the array and think everything in reverse sense
+
+
+11) LIST: Exactly similar to vector but gives you front operations as well; dynamic nature
+list <int> ls;
+ls.push_back(2); {2}
+ls.emplace_back(4); {2,4}
+ls.push_front(5); {5,2,4}
+ls.emplace_front(); {2,4}
+//All other functions are same as vector
+
+12) DQ: Similar to vector
+deque<int>dq;
+All functions similar to list and vector
+
+13) Stacks: LIFO: Last In First out
+stack<int> st;
+st.push(1); {1}
+st.push(2); {1,2}
+st.push(3); {1,2,3}
+st.push(4); {1,2,3,4}
+st.emplace(5); {1,2,3,4,5}
+Think of stack as a pile of bricks.
+st.top(); last element is printed; there's no indexing in stack like arrays; st[2] makes no sense
+st.pop(); removes the last element
+now if you do st.top(); itll give the second last element
+st.size(); size of stack
+st.empty(); true if empty else false
+s1.swap(s2); swap s1 with s2
+All operations in stack are O(1) time complexity.
+
+14) Queue: FIFO: First in First out
+queue<int>q;
+q.push(1); {1}
+q.push(2); {1,2}
+q.emplace(4); {1,2,4}
+Think of it like a ticketing queue; 1 came first then 2 then 4
+Hence, q.back(); will give 4
+q.front(); will give 1
+q.pop() pops the front element
+All operations in O(1) time complexity
+
+15) PRIORITY QUEUE (MAX HEAP): Similar to queue but the largest element stays at the top
+priority_queue<int>pq;
+pq.push(5); {5}
+pq.push(8); {5,8}
+pq.push(2); {5,8,2}
+pq.emplace(10); {5,8,2,10}
+
+pq.top(); 10
+pq.pop(); 10 is popped
+again pq.pop(); 8 is popped
+
+For a reverse priority queue where you want the minimum value at top: (MIN HEAP)
+priority_queue<int, vector<int>, greater<int>> pq;
+
+Push: log n
+Top: O(1)
+Pop: log n
+
+NOT A LINEAR CONTAINER; A TREE IS MAINTAINED INSIDE
+
+16) SET: Stores everything in sorted order and only unique elements
+set<int>st;
+st.insert(1); {1}
+st.emplace(2); {1,2}
+st.insert(2); {1,2} //Unique elements
+st.insert(4); {1,2,4}
+st.insert(3); {1,2,3,4} //sorted
+NOT A LINEAR CONTAINER; A TREE IS MAINTAINED
+
+// {1,2,3,4,5}
+auto it=st.find(3); ITERATOR POINTS TO THE 3; address
+auto it=st.find(6); IF AN ELEMENT IS NOT PRESENT IN THE SET; ST.FIND GIVES ST.END(); .FIND will return the memory just after the last element (end)
+
+int c=st.count(1); 1 if 1 is in the set else 0
+
+st.erase(5); erases 5; st.erase(iterator)
+
+auto it1=st.find(1);
+auto it2=st.find(4);
+st.erase(it1,it2); [start, end)
+
+auto it finds memory address to the value; iterator
+auto it=st.lower_bound(2);
+auto it=st.upper_bound(3);
+
+TIME COMPLEXITY: log n
+
+17) MULTI SET: Everything same as set; sorted; but stores duplicate characters
+
+multiset<int> ms;
+ms.insert(1); {1}
+ms.insert(1); {1,1}
+ms.insert(1); {1,1,1}
+
+ms.erase(1); all 1's are erased
+
+ms.erase(ms.find(1)); erases the first 1
+ms.erase(ms.find(1), ms.find(1)+2); erases 2 1s
+
+18) UNORDERED SET: Everything same as set; unique but not sorted
+unordered_set<int> st;
+TIME COMPLEXITY: O(1)
+Lower bound and upper bound functions do not work; all others do.
+In the worst case, time complexity: O(n)
+
+19) MAP:Keys are unique but the values can be same; like roll number is unique but 2 people named Tanishq will have different Keys
+Map stores everything in respect of keys and values.
+Keys can be of any datatypes.
+
+map<int, int> mpp; key is int, value is int
+map<int, pair<int, int>>mpp; key is int, value is pair
+map<pair<int,int>,int>mpp; key is pair, value is int
+
+mpp[1]=2; value 2 at key 1; in the map it stores (1,2)
+mpp.emplace({3,1}); value 1 at key 3
+mpp.insert({2,4}); value 4 at key 2
+
+MAP STORES UNIQUE KEYS IN SORTED ORDER.
+
+For the map:[{1,2},{2,4},{3,1}]:
+for(auto it:mpp) //For each loop in the map
+cout << it.first << " " << it.second <<endl;
+for loop traverses through each pair of key and values; 
+at every iteration it; it.first is the key, it.second is the value
+
+cout << mpp[1]; 2
+cout << mpp[5]; 0/NULL
+
+auto it=mpp.find(3); //ADDRESS WHERE THE KEY 3 libraries
+cout <<*(it).second; value at the key it
+
+auto it=mpp.find(5); points to mpp.end() after the map
+
+auto it=mpp.lower_bound(2);
+auto it=mpp.upper_bound(3);
+
+Time complexity: logN
+
+20) MULTIMAP: Everything same as map but you can store multiple keys; mpp[key] can't be used; sorted.
+
+21) UNORDERED MAP: Unique keys, not sorted
+Time complexity: O(1); worst case: O(n)
+
+22) Algorithms:
+
+a[]={1,5,3,2}
+
+sort(a,a+n); sorts the container {1,2,3,5}; works like [start, end)
+sort(v.begin(), v.end());
+sort(a+2,a+4); [start,end)
+
+In descending order:
+sort(a,a+n, greater<int>);
+
+23) pair<int, int>a[]={{1,2}, {2,1},{4,1}}
+
+//Sort it according to the second element in the ascending order
+// If second element is same, then sort it according to the first element in descending order
+
+bool comp(pair<int, int> p1, pair<int, int> p2)
+{
+    //This comparator says if the 2 pairs are in the correct order or not
+    if(p1.second<p2.second)
+    return true;
+    if(p1.second>p2.second)
+    return false;
+    if(p1.second==p2.second)
+    {
+        if(p1.first>p2.first)
+        return true;
+        else 
+        return false;
+    }
+    
+}
+
+sort(a,a+n,comp); //comp: self written comparator
+// The comparator will tell you if its in the correct order or not; if its not swap
+//While writing comparator, think of 2 elements; for "my way" sorting, write a comparator for 2 datatypes
+
+int num=7;
+int cnt=___builtin_popcount(); //returns how many set bits are there: 1s in the binary representation of the number
+
+long long num=162398857589;
+int cnt=___builtin_popcountll();
+
+24) Next permutation:
+Returns false if there are no more permutation (while loop breaks)
+string s="123";
+do{
+    cout <<s<<endl;
+    }while(next_permutation(s.begin(),s.end()));
+   
+    For 231; it will return 312, 321
+
+  VERY IMPORTANT:  TO PRINT ALL THE PERMUTATIONS; START WITH A SORTED string
+string s="123";
+sort(s.begin(), s.end());
+
+25) Max element in the array: [start,end)
+ int maxi=*max_element(a,a+n); *gives you element; without star: address
+ Similarly, min_element.
