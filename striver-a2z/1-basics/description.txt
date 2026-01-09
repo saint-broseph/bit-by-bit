@@ -1,0 +1,5 @@
+This contains the basics:
+1) Basic Maths
+2) Hashing
+3) Recursion
+4) Patterns
