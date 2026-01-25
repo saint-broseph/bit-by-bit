@@ -13,18 +13,16 @@ public:
 /*
   // O(N) Solution:
   int majorityElement(vector<int>& nums) {
-    int candidate = 0;
-    int count = 0;
+    int ans = 0;
+    int c = 0;
 
     for (int num : nums) {
-        if (count == 0) {
-            candidate = num;
+        if (c == 0) {
+            ans = num;
         }
-        count += (num == candidate) ? 1 : -1;
+        c += (num == ans) ? 1 : -1;
     }
-
-    return candidate;
+    return ans;
 }
-
 */
 };
