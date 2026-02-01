@@ -1,0 +1,16 @@
+CONCISE BREAKDOWN
+- The Goal: Transform an initial cat configuration 's' into a target configuration 'f'.
+- The Objective: Find the minimum number of days (operations) to reach the target.
+- The Constraint: Operations allowed are adding a cat, removing a cat, or moving a cat from one box to another.
+
+CORE CONCEPTS
+- Greedy Strategy: Moving a cat is always more efficient than removing one and then adding another elsewhere, as it counts as one operation instead of two.
+- Mismatch Counting: We only care about positions where the initial and final states differ.
+
+LOGIC AND IMPLEMENTATION
+1. Identify two types of mismatches at each index i:
+   - mis0: Box has a cat in 'f' but not in 's' (Target has 1, Initial has 0). Needs a cat.
+   - mis1: Box has a cat in 's' but not in 'f' (Initial has 1, Target has 0). Has an extra cat.
+2. We can resolve one 'mis0' and one 'mis1' simultaneously by using the "Move" operation (moving the extra cat to the empty target box). This costs 1 day.
+3. Any remaining mismatches (either remaining extra cats that need retirement or remaining empty boxes that need new cats) must be handled by individual "Add" or "Remove" operations.
+4. The total minimum operations is simply max(mis0, mis1). This covers all moves and the leftover individual additions/removals.
