@@ -1,0 +1,23 @@
+CONCISE BREAKDOWN
+- The Goal: Determine the winner (Alice, Bob, or Draw) of a chip-moving game.
+- The Objective: Alice moves down (straight or diagonal), Bob moves up (straight or diagonal). A player wins by landing on the other's square.
+- The Constraint: Board size h x w. If chips pass each other without landing on the same square, it's a draw. Alice starts.
+
+CORE CONCEPTS
+- Relative Vertical Distance: Let d = xb - xa. If d <= 0, they never meet (Draw).
+- Parity: Alice wins only if d is odd (it takes an odd number of total moves for them to meet). Bob wins only if d is even.
+- Horizontal Range: In 'k' moves, a player can cover a range of [y-k, y+k], clipped by the board boundaries [1, w].
+
+LOGIC AND IMPLEMENTATION
+1. Calculate vertical distance d = xb - xa. If d <= 0, output "Draw".
+2. Case 1: d is odd (Potential Alice win). 
+   - Alice needs moves = (d + 1) / 2. Bob needs (d - 1) / 2 moves to react.
+   - Alice tries to move towards Bob's column. Bob tries to run away.
+   - Alice's reach: [ya - moves, ya + moves]. Bob's reach: [yb - (moves-1), yb + (moves-1)].
+   - Alice wins if her reach fully covers Bob's possible escape range at the moment of capture.
+3. Case 2: d is even (Potential Bob win).
+   - Alice and Bob both make moves = d / 2.
+   - Bob tries to move towards Alice's column. Alice tries to run away.
+   - Bob's reach: [yb - moves, yb + moves]. Alice's reach: [ya - moves, ya + moves].
+   - Bob wins if his reach fully covers Alice's possible escape range at the moment of capture.
+4. If the required player cannot fully "trap" the other within the board boundaries, the result is "Draw".
