@@ -1,0 +1,17 @@
+CONCISE BREAKDOWN
+- The Goal: Choose exactly n elements from array b (length m) to form array c (length n).
+- The Objective: Maximize the total absolute difference D = Σ |a[i] - c[i]|.
+- The Constraint: n ≤ m; elements of b can only be used once.
+
+CORE CONCEPTS
+- Greedy Strategy: To maximize absolute difference, pair the smallest values of one set with the largest values of the other.
+- Sorting & Two Pointers: Sorting allows us to easily access the "extremes" (minimums and maximums) of both arrays.
+
+LOGIC AND IMPLEMENTATION
+1. Sort array 'a' in ascending order and array 'b' in ascending order.
+2. Use two pointers for 'a' (la = 0, ra = n-1) and two pointers for 'b' (lb = 0, rb = m-1).
+3. For n iterations (to pick n elements):
+   - Compare the potential difference of (Smallest 'a' vs Largest 'b') against (Largest 'a' vs Smallest 'b').
+   - Pick the pair that yields the larger absolute difference.
+   - Increment/decrement the corresponding pointers based on the choice.
+4. The sum of these maximum possible differences at each step gives the optimal answer.
