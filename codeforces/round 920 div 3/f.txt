@@ -1,0 +1,21 @@
+CONCISE BREAKDOWN
+- The Goal: Given an array 'a', answer 'q' queries (s, d, k).
+- The Objective: Calculate the weighted sum: Σ (a[s + i*d] * (i + 1)) for i from 0 to k-1.
+- The Constraint: n ≤ 10^5, q ≤ 2*10^5. A brute force O(q*k) is too slow as k can be O(n).
+
+CORE CONCEPTS
+- Square Root Decomposition: Divide queries based on the step size 'd'.
+- Small 'd' (d < B): Precalculate prefix sums for each possible step size 'd' to answer in O(1).
+- Large 'd' (d >= B): Brute force the sum. Since d is large, there are at most n/B terms, making it O(n/B).
+- Optimal Block Size: Setting B ≈ sqrt(n) (around 300-400) balances the two approaches.
+
+LOGIC AND IMPLEMENTATION
+1. Define a block size B.
+2. For d >= B: Manually iterate k times. Max iterations = n/B.
+3. For d < B: 
+   - Precalculate two types of prefix sums for each d:
+     - S1[d][i]: Prefix sum of a[i] with step d (a[i] + a[i-d] + ...).
+     - S2[d][i]: Prefix sum of (a[i] * index_in_progression) with step d.
+   - The formula for the weighted sum starting at 's' with step 'd' and length 'k' using prefix sums is:
+     Sum = S2 - (count_of_steps_before_s) * S1.
+4. Total complexity: O(n*B + q*n/B).
