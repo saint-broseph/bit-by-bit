@@ -1,0 +1,22 @@
+CONCISE BREAKDOWN
+- The Goal: Send n messages at specific times m[i] starting from time 0.
+- The Objective: Determine if the initial charge f is enough to send all messages.
+- The Constraint: 
+  1. Staying on costs 'a' per unit of time.
+  2. Turning off and back on costs 'b' flat.
+  3. Charge must remain > 0 at all times (f <= 0 means failure).
+
+CORE CONCEPTS
+- Greedy Strategy: For every interval between two messages, choose the cheaper option between leaving the phone on or turning it off and on.
+- Simulation: Track the charge consumption step-by-step from time 0 through all message timestamps.
+
+LOGIC AND IMPLEMENTATION
+1. Initialize 'current_time' at 0.
+2. For each message at time m[i]:
+   - Calculate the time elapsed: delta = m[i] - current_time.
+   - Calculate cost to stay on: cost_on = delta * a.
+   - Calculate cost to restart: cost_off_on = b.
+   - Subtract the minimum of (cost_on, cost_off_on) from the current charge f.
+   - Update 'current_time' to m[i].
+3. After processing a message, if f <= 0, Stepan cannot proceed.
+4. If all messages are processed and f > 0, the answer is YES.
