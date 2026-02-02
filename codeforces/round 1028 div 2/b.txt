@@ -1,0 +1,27 @@
+QUESTION
+Flower gives Gellyfish two permutations p and q of length n. Calculate an array r where each r[i] is the maximum value of (2^p[j] + 2^q[i-j]) for all j from 0 to i. Output each r[i] modulo 998244353.
+
+CONCISE BREAKDOWN
+- The Goal: Compute r[i] = max_{0 ≤ j ≤ i} (2^p[j] + 2^q[i-j]).
+- The Objective: Since 2^x grows exponentially, the maximum value of the sum is dominated by the largest exponent present in the pair.
+- The Constraint: n up to 10^5, sum of n up to 10^5. Time limit is 1 second. A brute force O(n^2) will fail.
+
+CORE CONCEPTS
+- Exponential Dominance: For any integers a, b, c, d, the expression (2^a + 2^b) > (2^c + 2^d) if max(a, b) > max(c, d). If the maximums are equal, we compare the minimums.
+- Monotonicity/RMQ: We need to efficiently find the pair (p[j], q[i-j]) that yields the highest power of 2.
+
+LOGIC AND IMPLEMENTATION
+1. Observation: r[i] = max(2^p[j] + 2^q[i-j]) is essentially asking us to find the index j that maximizes max(p[j], q[i-j]).
+2. However, there isn't a simple linear data structure that handles the "i-j" index relationship easily for all i.
+3. Key Insight: For a fixed i, we want to maximize the exponents. Since p and q are permutations, the values range from 0 to n-1.
+4. Using Bitsets or FFT? Usually, max-convolutions are hard. But here, we can use the property of powers of 2.
+5. Optimization: For a given i, the maximum possible exponent we can hope for is roughly n-1. We can check if it's possible to get an exponent ≥ V by checking if there exists j ≤ i such that p[j] ≥ V or q[i-j] ≥ V.
+6. Refined Greedy: For each i, r[i] will likely be dominated by the maximum p[j] or maximum q[i-j] available in the valid range. Let's precompute prefix maximums:
+   - pref_p[i] = max(p[0...i])
+   - pref_q[i] = max(q[0...i])
+7. Actually, for a fixed i, the best j is often either the one that gives the largest p[j] (j s.t. p[j] is max in 0...i) or the one that gives the largest q[i-j] (j s.t. q[i-j] is max in 0...i).
+8. Let `pos_p[v]` be the index where `p[j] = v` and `pos_q[v]` be the index where `q[j] = v`.
+9. For each i, we check the highest values. Since it's a permutation, we can check values from n-1 downwards. The first value `v` that can be achieved as either `p[j]` or `q[i-j]` will define the magnitude of `r[i]`.
+
+KEY TAKEAWAY FOR FUTURE
+When dealing with sums of powers (like $2^a + 2^b$), the sum is almost always determined by the maximum exponent. Treat these problems as "maximize the maximum element" problems rather than standard arithmetic.
