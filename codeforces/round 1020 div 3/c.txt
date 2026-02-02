@@ -1,0 +1,30 @@
+QUESTION
+Two integer arrays a and b of size n are complementary if there exists an integer x such that a_i + b_i = x for all 1 ≤ i ≤ n. Array a and b contain non-negative integers not greater than k. Given array a and array b (with some elements as -1), count the number of ways to fill b such that they are complementary and all b_i satisfy 0 ≤ b_i ≤ k.
+
+CONCISE BREAKDOWN
+- The Goal: Find how many values of 'x' exist that allow a valid completion of array b.
+- The Objective: For a chosen x, every b_i is determined by b_i = x - a_i.
+- The Constraint: 
+  1. If b_i was already given (not -1), then x must equal a_i + b_i.
+  2. For all i, 0 ≤ (x - a_i) ≤ k. This implies a_i ≤ x ≤ a_i + k.
+
+CORE CONCEPTS
+- Intersection of Ranges: Each element i imposes a constraint on what x can be. We need to find the intersection of all these constraints.
+- Fixed x: If any b_i is already known, x is fixed (or the problem is impossible if different b_i imply different x).
+
+LOGIC AND IMPLEMENTATION
+1. Determine the range of possible x based on a_i and k:
+   - For every i, b_i = x - a_i must be in [0, k].
+   - This means x must be in [a_i, a_i + k].
+   - To satisfy this for all i, x must be in [max(a_i), min(a_i + k)].
+2. Check if b_i is already provided:
+   - If there is at least one i where b_i != -1, then x is fixed to (a_i + b_i).
+   - Check if this fixed x is consistent across all given b_i.
+   - Check if this fixed x falls within the range [max(a_i), min(a_i + k)].
+   - If yes, answer is 1. If no, answer is 0.
+3. If all b_i are -1:
+   - The number of valid x values is the size of the intersection [L, R], where L = max(a_i) and R = min(a_i + k).
+   - Answer is max(0, R - L + 1).
+
+KEY TAKEAWAY FOR FUTURE
+When multiple conditions must be met for a single variable (like x), treat each condition as an interval. The set of all valid values is the intersection of these intervals. If a value is pre-determined, simply verify it against the intersected interval.
