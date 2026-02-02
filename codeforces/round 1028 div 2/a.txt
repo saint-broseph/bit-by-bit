@@ -1,0 +1,26 @@
+QUESTION
+Gellyfish (a HP) and Flower (b HP) have knights (c and d HP respectively). In odd rounds k, Gellyfish's knight attacks Flower or Flower's knight. In even rounds k, Flower's knight attacks Gellyfish or Gellyfish's knight. Attacks deal 1 damage. If a player's HP reaches 0, they lose. If a knight's HP reaches 0, it dies. Both play optimally. Who wins?
+
+CONCISE BREAKDOWN
+- The Goal: Determine if Gellyfish or Flower wins the duel.
+- The Objective: Choose between attacking the player or attacking the knight to ensure a win.
+- The Constraint: a, b, c, d can be up to 10^9. The game must end in a finite number of moves.
+
+CORE CONCEPTS
+- Optimal Strategy (Game Theory): A player will only attack the enemy knight if doing so prevents them from losing faster than they can win.
+- Simulation/Comparison: Since damage is always 1, we compare the "turns to win" for both sides under different scenarios.
+
+LOGIC AND IMPLEMENTATION
+1. Gellyfish wins if she can reduce Flower's HP (b) to 0 before Flower can reduce Gellyfish's HP (a) to 0.
+2. If Gellyfish ignores the enemy knight: She needs 'b' odd rounds to win.
+3. If Flower ignores the enemy knight: She needs 'a' even rounds to win.
+4. If Gellyfish attacks the enemy knight first: She spends 'd' rounds killing the knight, then 'b' rounds to win.
+5. Crucial Observation: Because Gellyfish moves first (k=1), she has a tempo advantage. 
+   - Gellyfish wins if:
+     - She can kill Flower before Flower kills her: (b <= a)
+     - OR, she can kill Flower's knight (taking d rounds) and still have enough HP (a) left to withstand any attacks before the knight died: (This happens if Gellyfish's knight lives longer than the enemy's knight, or if b is small enough).
+6. Simple condition for Gellyfish win: Since Gellyfish goes first, if b <= a, she simply hits Flower every time and wins. If b > a, she must hit the knight. If she hits the knight, the knight dies in d turns. If c > d, Gellyfish's knight survives longer, effectively disabling Flower's ability to deal damage while Gellyfish continues.
+7. Result: Gellyfish wins if (b <= a) OR (c > d). Otherwise, Flower wins.
+
+KEY TAKEAWAY FOR FUTURE
+In turn-based games with massive HP and constant damage, avoid complex simulation. Compare the number of turns required for win conditions (Player HP vs Knight HP) and account for who has the first-move advantage.
