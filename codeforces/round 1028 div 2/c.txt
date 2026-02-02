@@ -1,0 +1,27 @@
+QUESTION
+Gellyfish has an array 'a' of n positive integers. She can choose indices i and j (i ≠ j) and replace a[i] with gcd(a[i], a[j]). Find the minimum number of operations required to make all elements in the array equal.
+
+CONCISE BREAKDOWN
+- The Goal: Make all elements of the array identical.
+- The Objective: Minimize the operations using the rule a[i] = gcd(a[i], a[j]).
+- The Constraint: n and values of a[i] are up to 5000. Sum of n is also 5000.
+
+CORE CONCEPTS
+- Target Value: Since we can only replace an element with the GCD of itself and another element, the final value for all elements must be the GCD of the entire array (let's call this 'g').
+- Cost Analysis: 
+    - If the array already contains 'g', each element not equal to 'g' can be converted in exactly 1 operation (by pairing it with an existing 'g').
+    - If the array does not contain 'g', we must first "create" 'g' by performing GCD operations on a subarray.
+
+LOGIC AND IMPLEMENTATION
+1. Calculate the global GCD of the entire array (G).
+2. Check if G already exists in the array. 
+   - If yes, the answer is (n - count of G in array).
+3. If G does not exist, find the shortest subarray [i, j] such that the GCD of all elements in that subarray equals G.
+   - Let the length of this shortest subarray be 'L'.
+   - To create one 'G', it takes (L - 1) operations.
+   - Once we have one 'G', the remaining (n - 1) elements take 1 operation each.
+   - Total operations = (L - 1) + (n - 1).
+4. Since n is small (5000), we can find 'L' by iterating through all possible subarrays in O(n^2).
+
+KEY TAKEAWAY FOR FUTURE
+When a problem asks to make all elements equal via GCD, the target value is always the global GCD. The problem reduces to finding the most efficient way to "seed" that global GCD into the array, then spreading it to all other elements.
