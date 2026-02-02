@@ -1,0 +1,30 @@
+QUESTION
+Dr. TC creates an n x n grid from a binary string s of length n. Row i of the grid is string s with the i-th character flipped. A set of cells is "good" if all cells contain '0' and they are all part of the same connected component of '0's. Find the maximum size of such a set (the largest connected component of '0's).
+
+CONCISE BREAKDOWN
+- The Goal: Identify the largest connected component of 0s in the generated grid.
+- The Objective: Grid cell g[i][j] is s[j] if i != j, and flip(s[j]) if i == j.
+- The Constraint: n up to 2 * 10^5. We cannot construct the n x n grid.
+
+CORE CONCEPTS
+- Adjacency in Grid: Two cells (r1, c1) and (r2, c2) are adjacent if they differ by 1 in exactly one coordinate.
+- Connected Components: We need to find which 0s can reach each other.
+- Pattern Analysis: The grid is mostly identical rows (string s), except for the diagonal where s[i] is flipped.
+
+LOGIC AND IMPLEMENTATION
+1. Case 1: The "Bulk" 0s. 
+   - If s[j] == 0 and s[j+1] == 0, then for any row i (where i != j and i != j+1), the cells (i, j) and (i, j+1) are both 0 and adjacent.
+   - This creates large vertical/horizontal blocks of 0s. 
+   - Essentially, all columns j where s[j] == 0 form "columns of 0s". If two such columns are adjacent (s[j]=0 and s[j+1]=0), they are connected.
+2. Case 2: The Diagonal Flips.
+   - If s[i] == 1, then g[i][i] becomes 0. This "extra" 0 appears in a row that otherwise might have few 0s.
+   - We need to check if these diagonal 0s connect to the "bulk" 0s.
+   - A diagonal 0 at g[i][i] is adjacent to (i-1, i) and (i+1, i). These neighbors are 0 if s[i] was originally 0 (impossible here) or if the neighbor is also a diagonal flip.
+3. Total Count:
+   - Identify contiguous segments of 0s in the original string s.
+   - For each segment of length L, it contributes L * (n-1) zeros from the rows where the flip doesn't happen inside the segment, plus specific counts for the diagonal flips.
+   - Actually, if there is at least one '0' in s, almost all '0's in the grid (including the flips of '1's into '0's) connect into one giant component, UNLESS the string s is all '1's or has very specific patterns.
+   - If s has any '0', all "native" 0s connect. A flip g[i][i]=0 (where s[i]=1) connects to the main component if it's adjacent to a native 0.
+
+KEY TAKEAWAY FOR FUTURE
+In problems involving n x n grids generated from a single string, the connectivity usually depends on the contiguous segments of the characters in that string. Analyze the "background" (non-flipped cells) first, then see how the "exceptions" (flipped diagonal) link those components.
