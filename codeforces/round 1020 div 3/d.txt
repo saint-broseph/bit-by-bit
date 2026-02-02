@@ -1,0 +1,28 @@
+QUESTION
+Flower boy has n flowers with beauty a[i]. He needs to collect exactly m flowers such that the i-th collected flower has beauty at least b[i]. He can add at most one flower with beauty k anywhere in the garden. Find the minimum k to make the collection possible. Output 0 if already possible, and -1 if impossible even with the extra flower.
+
+CONCISE BREAKDOWN
+- The Goal: Select a subsequence of length m (possibly using one added element) such that subsequence[i] >= b[i].
+- The Objective: Minimize the value of the added flower k.
+- The Constraint: Flowers must be picked in order (left to right). Sum of n <= 2e5.
+
+CORE CONCEPTS
+- Greedy Subsequence Matching: To see how many requirements we can satisfy from the left, we pick the first available flower that fits the next requirement.
+- Prefix and Suffix Matching: 
+    - L[i]: The index of the last flower used to satisfy the first i requirements from the left.
+    - R[i]: The index of the first flower used to satisfy the last (m-i) requirements from the right.
+
+LOGIC AND IMPLEMENTATION
+1. Compute Prefix Match (pre): pre[i] is the index of the flower in 'a' used for b[i]. Use a greedy approach: for b[i], find the first a[j] (j > pre[i-1]) such that a[j] >= b[i].
+2. If pre[m] is valid (we matched all m), answer is 0.
+3. Compute Suffix Match (suf): suf[i] is the index of the flower in 'a' used for b[i] when matching from the end. For b[i], find the last a[j] (j < suf[i+1]) such that a[j] >= b[i].
+4. To use the magic flower for requirement 'i' (where 1 <= i <= m):
+    - We must satisfy requirements 1 to i-1 using flowers in a[1...L] where L < pos.
+    - We must satisfy requirements i+1 to m using flowers in a[R...n] where R > pos.
+    - This is possible if pre[i-1] < suf[i+1].
+    - If this condition holds, the magic flower k must be at least b[i].
+5. The answer is the minimum b[i] over all i where pre[i-1] < suf[i+1].
+6. If no such i exists, output -1.
+
+KEY TAKEAWAY FOR FUTURE
+When allowed to modify one element in a sequence to satisfy a subsequence constraint, use "prefix-greedy" and "suffix-greedy" arrays to find the 'gap' where the modification is most effective.
