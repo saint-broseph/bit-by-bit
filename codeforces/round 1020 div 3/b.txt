@@ -1,0 +1,27 @@
+QUESTION
+Given a permutation p of length n (0 to n-1) and a strip of n cells, St. Chroma paints the i-th cell with color MEX(p1, p2, ..., pi). Construct a permutation p that maximizes the number of cells painted with color x.
+
+CONCISE BREAKDOWN
+- The Goal: Create a permutation of [0, ..., n-1] such that MEX(p1...pi) = x for as many indices i as possible.
+- The Objective: MEX(p1...pi) = x means the set {p1, ..., pi} must contain all integers from 0 to x-1, but must NOT contain x.
+- The Constraint: n up to 2*10^5, color x can be up to n.
+
+CORE CONCEPTS
+- MEX Properties: To keep MEX constant at x, we must include all values < x immediately and then avoid adding x for as long as possible.
+- Permutation Construction: We use all values from 0 to n-1 exactly once.
+
+LOGIC AND IMPLEMENTATION
+1. Case x = 0: MEX is 0 if 0 is not in the prefix. To maximize this, put 0 at the very last position. The strip will be [0, 0, ..., 0, MEX_final]. All n-1 cells (except the last) will be color 0.
+2. Case x > 0:
+   - To get MEX = x as early as possible, the first x elements of the permutation must be {0, 1, 2, ..., x-1}.
+   - To keep MEX = x for as long as possible, we must delay the appearance of x. 
+   - After the first x elements, we can fill the permutation with any remaining numbers EXCEPT x.
+   - The value x should be placed at the very last possible position (index n).
+3. Implementation:
+   - Print 0, 1, 2, ..., x-1 first.
+   - Then print all remaining numbers from x+1 up to n-1.
+   - Finally, print x.
+   - If x = n, the MEX can never actually reach x (since the max possible MEX is n), but the logic of putting 0...n-1 in order still applies.
+
+KEY TAKEAWAY FOR FUTURE
+To maximize the duration of a specific MEX value 'x', front-load all values smaller than x to reach the threshold, then back-load 'x' itself to the end of the sequence to prevent the MEX from increasing.
