@@ -1,0 +1,23 @@
+QUESTION
+In order to test his patients' intelligence, Dr. TC created the following test. First, he creates a binary string s having n characters. Then, he creates n binary strings a1, a2, ..., an. It is known that ai is created by first copying s, then flipping the i'th character (1 becomes 0 and vice versa). After creating all n strings, he arranges them into a grid where the i'th row is ai. The patient needs to count the number of 1s written on the board.
+
+CONCISE BREAKDOWN
+- The Goal: Count the total number of '1' characters in a grid formed by n variations of string s.
+- The Objective: Each row i is string s with the i-th bit flipped.
+- The Constraint: n is small (up to 10^5), must run in less than a second.
+
+CORE CONCEPTS
+- Combinatorics / Bit Counting: Instead of building the grid, calculate how many 1s each original character contributes to the final total after flipping.
+
+LOGIC AND IMPLEMENTATION
+1. Count the initial number of '1's in string s; let this be 'total_ones'.
+2. When we create the n strings:
+   - If s[i] is '1', in the i-th string, it becomes '0'. So for that specific row, the count of 1s is (total_ones - 1).
+   - If s[i] is '0', in the i-th string, it becomes '1'. So for that specific row, the count of 1s is (total_ones + 1).
+3. The total answer is the sum of 1s across all n rows.
+4. Simplified Math: 
+   Total = (n * total_ones) - (count of '1's in s) + (count of '0's in s).
+   Because each '1' in s is flipped to '0' exactly once, and each '0' in s is flipped to '1' exactly once.
+
+KEY TAKEAWAY FOR FUTURE
+When asked to count properties in a large generated structure (like a grid of strings), avoid constructing the structure. Look for how much each element of the initial state contributes to the final sum or how many times a specific operation (like a flip) occurs.
