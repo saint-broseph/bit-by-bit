@@ -1,0 +1,87 @@
+All Three Traversals in One Pass (Preorder, Inorder, Postorder)Problem StatementGiven the root of a Binary Tree, return its Preorder, Inorder, and Postorder traversal sequences simultaneously by making just one single traversal pass through the tree.ExampleInput:Plaintext      1
+     / \
+    2   3
+   / \
+  4   5
+Output:Preorder: [1, 2, 4, 5, 3]Inorder: [4, 2, 5, 1, 3]Postorder: [4, 5, 2, 3, 1]Intuition & AlgorithmInstead of calling three separate recursive functions (which takes a total of $3 \times O(N)$ structural traversals), we use an iterative stack-based simulation.The stack stores custom pairs: Pair<Node, State>, where State represents an integer value from 1 to 3:State 1 (Preorder): Node is visited for the first time.State 2 (Inorder): Node is visited for the second time (after exploring its entire left subtree).State 3 (Postorder): Node is visited for the third time (after exploring both left and right subtrees).State Transition LogicInitialize an empty stack and push (root, 1). While the stack is not empty, pop the top element (node, state) and follow these state-dependent operations:Plaintext       State 1: Preorder              State 2: Inorder             State 3: Postorder
+    ┌──────────────────────┐       ┌──────────────────────┐       ┌──────────────────────┐
+    │ 1. Print/Save Data   │       │ 1. Print/Save Data   │       │ 1. Print/Save Data   │
+    │ 2. Change state to 2 │ ───>  │ 2. Change state to 3 │ ───>  │ 2. Completely Pop    │
+    │ 3. Push current back │       │ 3. Push current back │       │    from the stack    │
+    │ 4. Push LEFT child   │       │ 4. Push RIGHT child  │       └──────────────────────┘
+    └──────────────────────┘       └──────────────────────┘
+Java Implementation (Iterative Multi-Pass Simulation)Javaimport java.util.*;
+
+class SolutionThreeInOne {
+    // Utility Pair structure for explicit state-tracking
+    private static class Pair {
+        Node node;
+        int state;
+
+        Pair(Node node, int state) {
+            this.node = node;
+            this.state = state;
+        }
+    }
+
+    // Function to compute Preorder, Inorder, and Postorder in a single traversal
+    public List<List<Integer>> preInPostTraversal(Node root) {
+        List<Integer> pre = new ArrayList<>();
+        List<Integer> in = new ArrayList<>();
+        List<Integer> post = new ArrayList<>();
+
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        // Stack to maintain processing elements and their traversal stages
+        Stack<Pair> st = new Stack<>();
+        st.push(new Pair(root, 1));
+
+        while (!st.isEmpty()) {
+            Pair curr = st.pop();
+
+            // 1. Preorder State
+            if (curr.state == 1) {
+                pre.add(curr.node.data);
+                
+                curr.state = 2; // Advance state
+                st.push(curr);  // Push modified state back
+
+                if (curr.node.left != null) {
+                    st.push(new Pair(curr.node.left, 1));
+                }
+            }
+            // 2. Inorder State
+            else if (curr.state == 2) {
+                in.add(curr.node.data);
+                
+                curr.state = 3; // Advance state
+                st.push(curr);  // Push modified state back
+
+                if (curr.node.right != null) {
+                    st.push(new Pair(curr.node.right, 1));
+                }
+            }
+            // 3. Postorder State
+            else {
+                post.add(curr.node.data);
+                // No pushback happens here, the item remains popped
+            }
+        }
+
+        List<List<Integer>> result = new ArrayList<>();
+        result.add(pre);
+        result.add(in);
+        result.add(post);
+        return result;
+    }
+
+    public void printList(List<Integer> list) {
+        for (int num : list) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}
+Complexity AnalysisTime Complexity: $O(N)$Every node is put on and taken off the stack exactly three times (corresponding to state updates 1, 2, and 3). Therefore, total iterations are bound directly by $3 \times N$, which reduces to linear time.Space Complexity: $O(N)$Stack Allocation: Takes $O(H)$ extra space, scaling to $O(N)$ in the worst-case configuration of a completely skewed degenerate tree.Output Storage: Storing the final results requires three distinct lists (pre, in, post), consuming an absolute value of $3 \times N$ dynamic units.
